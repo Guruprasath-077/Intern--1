@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Mark Report</title>
+
+    <style>
+        body {
+            background-color: lightblue;
+            font-family: Arial;
+            text-align: center;
+        }
+
+        .box {
+            background-color: white;
+            width: 350px;
+            margin: 40px auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: blue;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        td {
+            padding: 8px;
+            border: 1px solid gray;
+        }
+
+        button {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        #result {
+            color: green;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+
+        <h1>Student Mark Report</h1>
+
+        <h3 id="student"></h3>
+
+        <table>
+            <tr>
+                <td>Tamil</td>
+                <td id="tamil"></td>
+            </tr>
+
+            <tr>
+                <td>English</td>
+                <td id="english"></td>
+            </tr>
+
+            <tr>
+                <td>Maths</td>
+                <td id="maths"></td>
+            </tr>
+
+            <tr>
+                <td>Science</td>
+                <td id="science"></td>
+            </tr>
+
+            <tr>
+                <td>Computer</td>
+                <td id="computer"></td>
+            </tr>
+        </table>
+
+        <button onclick="showResult()">Show Result</button>
+
+        <div id="output"></div>
+
+    </div>
+
+    <script>
+        let name = "Guruprasath";
+
+        let tamil = 85;
+        let english = 78;
+        let maths = 92;
+        let science = 88;
+        let computer = 95;
+
+        let total = tamil + english + maths + science + computer;
+        let average = total / 5;
+
+        document.getElementById("student").innerHTML =
+            "Name: " + name;
+
+        document.getElementById("tamil").innerHTML = tamil;
+        document.getElementById("english").innerHTML = english;
+        document.getElementById("maths").innerHTML = maths;
+        document.getElementById("science").innerHTML = science;
+        document.getElementById("computer").innerHTML = computer;
+
+        function showResult() {
+
+            let result = "";
+            let grade = "";
+
+            if (tamil >= 35 && english >= 35 &&
+                maths >= 35 && science >= 35 &&
+                computer >= 35) {
+
+                result = "PASS";
+
+                if (average >= 90) {
+                    grade = "A+";
+                } else if (average >= 80) {
+                    grade = "A";
+                } else if (average >= 70) {
+                    grade = "B";
+                } else if (average >= 50) {
+                    grade = "C";
+                } else {
+                    grade = "D";
+                }
+
+            } else {
+                result = "FAIL";
+                grade = "F";
+            }
+
+            document.getElementById("output").innerHTML =
+                "<hr>" +
+                "<h3>Total Marks: " + total + "</h3>" +
+                "<h3>Average: " + average + "</h3>" +
+                "<h3 id='result'>Result: " + result + "</h3>" +
+                "<h3>Grade: " + grade + "</h3>";
+        }
+    </script>
+
+</body>
+</html>
