@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense Tracker</title>
+
+    <style>
+        body {
+            background-color: lightblue;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        .box {
+            background-color: white;
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        button {
+            background-color: blue;
+            color: white;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <h1>Expense Tracker</h1>
+
+        <input id="name" placeholder="Expense name">
+        <br><br>
+
+        <input id="amount" type="number" placeholder="Amount">
+        <br><br>
+
+        <button onclick="addExpense()">Add Expense</button>
+
+        <p id="list"></p>
+        <h3 id="total">Total: Rs. 0</h3>
+    </div>
+
+    <script>
+        let total = 0;
+
+        function addExpense() {
+            let name = document.getElementById("name").value;
+            let amount = Number(document.getElementById("amount").value);
+
+            if (name != "" && amount > 0) {
+                total = total + amount;
+
+                document.getElementById("list").innerHTML +=
+                 name + " - Rs. " + amount + "<br>";
+
+                document.getElementById("total").innerHTML =
+                    "Total: Rs. " + total;
+            }
+        }
+    </script>
+
+</body>
+</html>
