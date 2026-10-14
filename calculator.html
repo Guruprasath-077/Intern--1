@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Calculator</title>
+
+    <style>
+        body {
+            background-color: lightblue;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        .box {
+            background-color: white;
+            width: 280px;
+            margin: 60px auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input {
+            padding: 10px;
+            width: 80%;
+        }
+
+        button {
+            background-color: blue;
+            color: white;
+            padding: 10px;
+            margin: 5px;
+            border: none;
+        }
+
+        h3 {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <h1>Calculator</h1>
+
+        <input type="number" id="n1" placeholder="First number">
+        <br><br>
+
+        <input type="number" id="n2" placeholder="Second number">
+        <br><br>
+
+        <button onclick="calculate('+')">+</button>
+        <button onclick="calculate('-')">-</button>
+        <button onclick="calculate('*')">*</button>
+        <button onclick="calculate('/')">/</button>
+
+        <h3 id="result">Result: </h3>
+    </div>
+
+    <script>
+        function calculate(op) {
+            let a = Number(document.getElementById("n1").value);
+            let b = Number(document.getElementById("n2").value);
+            let answer;
+
+            if (op == '+') {
+                answer = a + b;
+            } else if (op == '-') {
+                answer = a - b;
+            } else if (op == '*') {
+                answer = a * b;
+            } else if (op == '/') {
+                if (b == 0) {
+                    document.getElementById("result").innerHTML =
+                        "Cannot divide by zero";
+                    return;
+                }
+                answer = a / b;
+            }
+
+            document.getElementById("result").innerHTML =
+                "Result: " + answer;
+        }
+    </script>
+
+</body>
+</html>
