@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rock Paper Scissors</title>
+
+    <style>
+        body {
+            background-color: #20243a;
+            color: white;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        .box {
+            background-color: #303653;
+            width: 320px;
+            margin: 70px auto;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 12px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: orange;
+        }
+
+        h2 {
+            color: yellow;
+        }
+
+        #result {
+            color: lightgreen;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <h1>Rock Paper Scissors</h1>
+
+        <p>Choose your move!</p>
+
+        <button onclick="play('Rock')">✊ Rock</button>
+        <button onclick="play('Paper')">✋ Paper</button>
+        <button onclick="play('Scissors')">✌️ Scissors</button>
+
+        <h3 id="player">Your choice: -</h3>
+        <h3 id="computer">Computer: -</h3>
+
+        <h2 id="result">Let's Play!</h2>
+
+        <p id="score">Your Score: 0 | Computer: 0</p>
+
+        <button onclick="resetGame()">Reset Game</button>
+    </div>
+
+    <script>
+        let userScore = 0;
+        let computerScore = 0;
+
+        function play(user) {
+            let choices = ["Rock", "Paper", "Scissors"];
+
+            let computer = choices[Math.floor(Math.random() * 3)];
+            let result = "";
+
+            if (user == computer) {
+                result = "It's a Draw!";
+            } else if (
+                (user == "Rock" && computer == "Scissors") ||
+                (user == "Paper" && computer == "Rock") ||
+                (user == "Scissors" && computer == "Paper")
+            ) {
+                result = "You Win!";
+                userScore++;
+            } else {
+                result = "Computer Wins!";
+                computerScore++;
+            }
+
+            document.getElementById("player").innerHTML =
+                "Your choice: " + user;
+
+            document.getElementById("computer").innerHTML =
+                "Computer: " + computer;
+
+            document.getElementById("result").innerHTML = result;
+
+            document.getElementById("score").innerHTML =
+                "Your Score: " + userScore +
+                " | Computer: " + computerScore;
+        }
+
+        function resetGame() {
+            userScore = 0;
+            computerScore = 0;
+
+            document.getElementById("player").innerHTML = "Your choice: -";
+            document.getElementById("computer").innerHTML = "Computer: -";
+            document.getElementById("result").innerHTML = "Let's Play!";
+            document.getElementById("score").innerHTML =
+                "Your Score: 0 | Computer: 0";
+        }
+    </script>
+
+</body>
+</html>
