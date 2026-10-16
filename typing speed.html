@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Typing Speed Test</title>
+
+    <style>
+        body {
+            background-color: #e0f2fe;
+            font-family: Arial;
+            text-align: center;
+        }
+
+        .box {
+            background-color: white;
+            width: 350px;
+            margin: 60px auto;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        h1 {
+            color: blue;
+        }
+
+        textarea {
+            width: 90%;
+            height: 100px;
+            padding: 10px;
+        }
+
+        button {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        h3 {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <h1>Typing Speed Test</h1>
+
+        <p id="sentence">
+            Practice makes a person perfect.
+        </p>
+
+        <textarea id="typing" placeholder="Type the sentence here..."
+        oninput="startTest()"></textarea>
+
+        <h3 id="timer">Time: 0 seconds</h3>
+        <h3 id="result"></h3>
+
+        <button onclick="checkSpeed()">Check Speed</button>
+        <button onclick="resetTest()">Reset</button>
+    </div>
+
+    <script>
+        let startTime;
+        let started = false;
+
+        function startTest() {
+            if (!started) {
+                startTime = new Date();
+                started = true;
+            }
+        }
+
+        function checkSpeed() {
+            if (!started) {
+                document.getElementById("result").innerHTML =
+                    "Start typing first!";
+                return;
+            }
+
+            let text = document.getElementById("typing").value;
+            let time = (new Date() - startTime) / 1000;
+            let words = text.trim().split(/\s+/).filter(word => word != "").length;
+            let speed = Math.round(words / (time / 60));
+
+            document.getElementById("timer").innerHTML =
+                "Time: " + Math.round(time) + " seconds";
+
+            document.getElementById("result").innerHTML =
+                "Typing Speed: " + speed + " WPM";
+        }
+
+        function resetTest() {
+            document.getElementById("typing").value = "";
+            document.getElementById("timer").innerHTML = "Time: 0 seconds";
+            document.getElementById("result").innerHTML = "";
+            started = false;
+        }
+    </script>
+
+</body>
+</html>
