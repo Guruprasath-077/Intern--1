@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Cafeteria</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff8ed;
+            color: #39251c;
+        }
+
+        header {
+            background: #40271d;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h2 {
+            color: #ffcc80;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        nav a:hover {
+            color: #ffcc80;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 75px 20px;
+            background: #f3dfc1;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+
+        button {
+            background: #a64b2a;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #72331d;
+        }
+
+        .menu {
+            padding: 45px 8%;
+            text-align: center;
+        }
+
+        .menu h2 {
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
+
+        .items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px #00000015;
+        }
+
+        .food {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .price {
+            color: #a64b2a;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        footer {
+            background: #40271d;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 7px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h2>☕ Campus Café</h2>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#menu">Menu</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Welcome to Our Cafeteria!</h1>
+        <p>🍔 Good Food • Great Taste • Good Mood ☕</p>
+        <button onclick="showMenu()">Explore Our Menu</button>
+    </section>
+
+    <section class="menu" id="menu">
+        <h2>Our Popular Menu</h2>
+
+        <div class="items">
+
+            <div class="card">
+                <div class="food">☕</div>
+                <h3>Hot Coffee</h3>
+                <p>Fresh and delicious coffee.</p>
+                <p class="price">₹30</p>
+                <button onclick="order('Hot Coffee', 30)">Order</button>
+            </div>
+
+            <div class="card">
+                <div class="food">🍔</div>
+                <h3>Veg Burger</h3>
+                <p>A tasty burger with fresh vegetables.</p>
+                <p class="price">₹80</p>
+                <button onclick="order('Veg Burger', 80)">Order</button>
+            </div>
+
+            <div class="card">
+                <div class="food">🍕</div>
+                <h3>Pizza</h3>
+                <p>Cheesy pizza with delicious toppings.</p>
+                <p class="price">₹120</p>
+                <button onclick="order('Pizza', 120)">Order</button>
+            </div>
+
+            <div class="card">
+                <div class="food">🥪</div>
+                <h3>Sandwich</h3>
+                <p>Fresh sandwich for a quick snack.</p>
+                <p class="price">₹50</p>
+                <button onclick="order('Sandwich', 50)">Order</button>
+            </div>
+
+        </div>
+    </section>
+
+    <footer id="contact">
+        <p>📍 Campus Café | Open Daily: 8 AM – 8 PM</p>
+        <p>© 2026 Campus Café. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function showMenu() {
+            document.getElementById("menu").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+
+        function order(item, price) {
+            alert(
+                "You selected: " + item +
+                "\nPrice: ₹" + price +
+                "\n\nThank you for choosing Campus Café!"
+            );
+        }
+    </script>
+
+</body>
+</html>
