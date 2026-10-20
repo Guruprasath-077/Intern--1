@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guess the Number</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #e0f2fe;
+            padding: 100px 20px;
+        }
+
+        .game {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 350px;
+            margin: auto;
+        }
+
+        input, button {
+            padding: 12px;
+            margin: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #0284c7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="game">
+    <h1>🎯 Guess the Number</h1>
+    <p>Guess a number between 1 and 100.</p>
+
+    <input type="number" id="guess"
+           min="1" max="100" placeholder="Enter number">
+
+    <br>
+
+    <button onclick="checkGuess()">Guess</button>
+    <button onclick="restart()">Restart</button>
+
+    <h3 id="result">Good luck!</h3>
+    <p id="attempts">Attempts: 0</p>
+</div>
+
+<script>
+    let number = Math.floor(Math.random() * 100) + 1;
+    let count = 0;
+    let finished = false;
+
+    function checkGuess() {
+        let input = document.getElementById("guess");
+        let guess = Number(input.value);
+        let result = document.getElementById("result");
+
+        if (finished) {
+            result.textContent = "Click Restart to play again!";
+            return;
+        }
+
+        if (input.value === "" || guess < 1 ||
+            guess > 100 || !Number.isInteger(guess)) {
+            result.textContent = "Enter a number from 1 to 100!";
+            return;
+        }
+
+        count++;
+
+        if (guess === number) {
+            result.textContent = "🎉 Correct! You won!";
+            finished = true;
+        } else if (guess < number) {
+            result.textContent = "📈 Too low! Try higher.";
+        } else {
+            result.textContent = "📉 Too high! Try lower.";
+        }
+
+        document.getElementById("attempts").textContent =
+            "Attempts: " + count;
+
+        input.value = "";
+    }
+
+    function restart() {
+        number = Math.floor(Math.random() * 100) + 1;
+        count = 0;
+        finished = false;
+
+        document.getElementById("guess").value = "";
+        document.getElementById("result").textContent = "Good luck!";
+        document.getElementById("attempts").textContent = "Attempts: 0";
+    }
+</script>
+
+</body>
+</html>
