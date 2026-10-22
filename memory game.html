@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Match Game</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f4f0ff;
+        margin: 0;
+        padding: 25px 10px;
+    }
+
+    h1 {
+        color: #5b21b6;
+    }
+
+    .info {
+        margin: 20px;
+        font-size: 18px;
+    }
+
+    .game {
+        display: grid;
+        grid-template-columns: repeat(4, 75px);
+        gap: 10px;
+        justify-content: center;
+        margin: 25px auto;
+    }
+
+    .card {
+        height: 75px;
+        width: 75px;
+        border: none;
+        border-radius: 12px;
+        background: #7c3aed;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    .card:hover {
+        background: #6d28d9;
+    }
+
+    .card.matched {
+        background: #bbf7d0;
+        cursor: default;
+    }
+
+    button.restart {
+        background: #5b21b6;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>🧠 Memory Match</h1>
+<p>Find all matching emoji pairs!</p>
+
+<div class="info">
+    Moves: <span id="moves">0</span>
+    &nbsp; | &nbsp;
+    Pairs: <span id="pairs">0</span>/8
+</div>
+
+<div class="game" id="game"></div>
+
+<p id="message">Choose two cards to begin.</p>
+
+<button class="restart" onclick="startGame()">Restart Game</button>
+
+<script>
+const emojis = [
+    "🍎", "🚀", "🐱", "⚽",
+    "🎸", "🌈", "🍕", "🐼"
+];
+
+let firstCard = null;
+let secondCard = null;
+let locked = false;
+let moves = 0;
+let pairs = 0;
+let matched = new Set();
+
+function startGame() {
+    const cards = [...emojis, ...emojis];
+
+    cards.sort(() => Math.random() - 0.5);
+
+    firstCard = null;
+    secondCard = null;
+    locked = false;
+    moves = 0;
+    pairs = 0;
+    matched = new Set();
+
+    document.getElementById("moves").textContent = 0;
+    document.getElementById("pairs").textContent = 0;
+    document.getElementById("message").textContent =
+        "Choose two cards to begin.";
+
+    const game = document.getElementById("game");
+    game.replaceChildren();
+
+    cards.forEach((emoji, index) => {
+        const card = document.createElement("button");
+        card.className = "card";
+        card.textContent = "?";
+        card.dataset.emoji = emoji;
+        card.dataset.index = index;
+        card.setAttribute("aria-label", "Hidden card");
+
+        card.addEventListener("click", () => flipCard(card));
+        game.appendChild(card);
+    });
+}
+
+function flipCard(card) {
+    if (
+        locked ||
+        card === firstCard ||
+        card.classList.contains("matched")
+    ) {
+        return;
+    }
+
+    card.textContent = card.dataset.emoji;
+    card.setAttribute("aria-label", card.dataset.emoji);
+
+    if (firstCard === null) {
+        firstCard = card;
+        return;
+    }
+
+    secondCard = card;
+    moves++;
+
+    document.getElementById("moves").textContent = moves;
+
+    if (firstCard.dataset.emoji === secondCard.dataset.emoji) {
+        firstCard.classList.add("matched");
+        secondCard.classList.add("matched");
+
+        matched.add(firstCard);
+        matched.add(secondCard);
+
+        pairs++;
+        document.getElementById("pairs").textContent = pairs;
+
+        firstCard = null;
+        secondCard = null;
+
+        if (pairs === emojis.length) {
+            document.getElementById("message").textContent =
+                "🎉 You won in " + moves + " moves!";
+        }
+    } else {
+        locked = true;
+
+        setTimeout(() => {
+            firstCard.textContent = "?";
+            secondCard.textContent = "?";
+
+            firstCard.setAttribute("aria-label", "Hidden card");
+            secondCard.setAttribute("aria-label", "Hidden card");
+
+            firstCard = null;
+            secondCard = null;
+            locked = false;
+        }, 800);
+    }
+}
+
+startGame();
+</script>
+
+</body>
+</html>
