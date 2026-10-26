@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyber Clicker</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #101020;
+    color: white;
+    text-align: center;
+}
+header { padding: 25px; background: #1b1b35; }
+h1 { color: #00f5d4; }
+.container { max-width: 500px; margin: 25px auto; padding: 15px; }
+.score-box {
+    background: #20203b;
+    padding: 20px;
+    border-radius: 15px;
+}
+#score { font-size: 42px; color: #00f5d4; margin: 10px; }
+.orb {
+    width: 170px;
+    height: 170px;
+    margin: 30px auto;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffffff, #00f5d4, #635bff);
+    box-shadow: 0 0 35px #00f5d4;
+    border: none;
+    cursor: pointer;
+    font-size: 55px;
+    transition: transform 0.1s;
+}
+.orb:active { transform: scale(0.9); }
+.shop {
+    background: #20203b;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 15px;
+}
+.upgrade {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid #44445d;
+}
+button.buy, #reset {
+    background: #635bff;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 10px;
+    cursor: pointer;
+}
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+#message { color: #ffd166; min-height: 22px; }
+footer { padding: 20px; color: #aaa; }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>⚡ CYBER CLICKER</h1>
+    <p>Collect energy. Upgrade your power.</p>
+</header>
+
+<div class="container">
+    <div class="score-box">
+        <p>YOUR ENERGY</p>
+        <div id="score">0</div>
+        <p>Energy per click: <span id="power">1</span></p>
+        <p>Auto energy per second: <span id="auto">0</span></p>
+    </div>
+
+    <button class="orb" id="orb" aria-label="Collect energy">⚡</button>
+    <p id="message">Click the orb to collect energy!</p>
+
+    <div class="shop">
+        <h2>🛒 Upgrade Shop</h2>
+
+        <div class="upgrade">
+            <div>
+                <strong>Power Boost</strong>
+                <p>+1 energy per click</p>
+                <span>Cost: <b id="powerCost">10</b></span>
+            </div>
+            <button class="buy" id="buyPower">Buy</button>
+        </div>
+
+        <div class="upgrade">
+            <div>
+                <strong>Auto Collector</strong>
+                <p>+1 energy per second</p>
+                <span>Cost: <b id="autoCost">25</b></span>
+            </div>
+            <button class="buy" id="buyAuto">Buy</button>
+        </div>
+
+        <p>Power upgrades: <span id="powerLevel">0</span></p>
+        <p>Auto upgrades: <span id="autoLevel">0</span></p>
+        <button id="reset">Reset Game</button>
+    </div>
+</div>
+
+<footer>Cyber Clicker © 2026</footer>
+
+<script>
+let score = 0;
+let power = 1;
+let auto = 0;
+let powerCost = 10;
+let autoCost = 25;
+let powerLevel = 0;
+let autoLevel = 0;
+
+const $ = id => document.getElementById(id);
+
+function update() {
+    $("score").textContent = Math.floor(score);
+    $("power").textContent = power;
+    $("auto").textContent = auto;
+    $("powerCost").textContent = powerCost;
+    $("autoCost").textContent = autoCost;
+    $("powerLevel").textContent = powerLevel;
+    $("autoLevel").textContent = autoLevel;
+    $("buyPower").disabled = score < powerCost;
+    $("buyAuto").disabled = score < autoCost;
+}
+
+$("orb").addEventListener("click", () => {
+    score += power;
+    $("message").textContent = "+" + power + " energy collected!";
+    update();
+});
+
+$("buyPower").addEventListener("click", () => {
+    if (score < powerCost) return;
+    score -= powerCost;
+    power++;
+    powerLevel++;
+    powerCost = Math.ceil(powerCost * 1.7);
+    $("message").textContent = "Power upgraded!";
+    update();
+});
+
+$("buyAuto").addEventListener("click", () => {
+    if (score < autoCost) return;
+    score -= autoCost;
+    auto++;
+    autoLevel++;
+    autoCost = Math.ceil(autoCost * 1.8);
+    $("message").textContent = "Auto collector activated!";
+    update();
+});
+
+setInterval(() => {
+    score += auto;
+    update();
+}, 1000);
+
+$("reset").addEventListener("click", () => {
+    if (!confirm("Reset all progress?")) return;
+    score = 0;
+    power = 1;
+    auto = 0;
+    powerCost = 10;
+    autoCost = 25;
+    powerLevel = 0;
+    autoLevel = 0;
+    $("message").textContent = "Game reset! Start collecting.";
+    update();
+});
+
+update();
+</script>
+</body>
+</html>
