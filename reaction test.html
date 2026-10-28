@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reaction Time Tester</title>
+<style>
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111827;
+    color: white;
+    text-align: center;
+}
+.container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 20px;
+}
+h1 {
+    color: #38bdf8;
+}
+#game {
+    height: 260px;
+    background: #dc2626;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+}
+#game.waiting {
+    background: #eab308;
+}
+#game.ready {
+    background: #16a34a;
+}
+button {
+    margin: 20px 5px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    background: #38bdf8;
+    color: #111827;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover {
+    background: #7dd3fc;
+}
+.result {
+    font-size: 22px;
+    margin: 20px;
+}
+.stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    margin-top: 20px;
+}
+.card {
+    background: #1f2937;
+    padding: 15px;
+    border-radius: 10px;
+    flex: 1;
+}
+.card span {
+    display: block;
+    color: #38bdf8;
+    font-size: 24px;
+    margin-top: 8px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Reaction Time Tester</h1>
+    <p>Test how quickly you can react!</p>
+
+    <div id="game">Press Start to Begin</div>
+
+    <button onclick="startGame()">Start Test</button>
+    <button onclick="resetGame()">Reset</button>
+
+    <div class="result" id="result">
+        Your reaction time will appear here.
+    </div>
+
+    <div class="stats">
+        <div class="card">
+            Best Time
+            <span id="best">-- ms</span>
+        </div>
+        <div class="card">
+            Attempts
+            <span id="attempts">0</span>
+        </div>
+    </div>
+</div>
+
+<script>
+const game = document.getElementById("game");
+const result = document.getElementById("result");
+const bestDisplay = document.getElementById("best");
+const attemptsDisplay = document.getElementById("attempts");
+
+let state = "idle";
+let startTime = 0;
+let timer = null;
+let attempts = 0;
+let best = Infinity;
+
+function startGame() {
+    clearTimeout(timer);
+    state = "waiting";
+    game.className = "waiting";
+    game.textContent = "Wait for GREEN...";
+    result.textContent = "Get ready!";
+
+    const delay = Math.random() * 3000 + 2000;
+
+    timer = setTimeout(() => {
+        state = "ready";
+        startTime = performance.now();
+        game.className = "ready";
+        game.textContent = "CLICK NOW!";
+    }, delay);
+}
+
+game.addEventListener("click", () => {
+    if (state === "waiting") {
+        clearTimeout(timer);
+        state = "idle";
+        game.className = "";
+        game.textContent = "Too Early!";
+        result.textContent = "Wait until the screen turns green.";
+        return;
+    }
+
+    if (state === "ready") {
+        const reaction = Math.round(performance.now() - startTime);
+        attempts++;
+        state = "idle";
+        game.className = "";
+        game.textContent = "Click Start to Try Again";
+
+        result.textContent = "Your time: " + reaction + " ms";
+        attemptsDisplay.textContent = attempts;
+
+        if (reaction < best) {
+            best = reaction;
+            bestDisplay.textContent = best + " ms";
+        }
+    }
+});
+
+function resetGame() {
+    clearTimeout(timer);
+    state = "idle";
+    attempts = 0;
+    best = Infinity;
+
+    game.className = "";
+    game.textContent = "Press Start to Begin";
+    result.textContent = "Your reaction time will appear here.";
+    attemptsDisplay.textContent = "0";
+    bestDisplay.textContent = "-- ms";
+}
+</script>
+</body>
+</html>
