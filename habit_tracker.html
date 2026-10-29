@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Habit Tracker</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #eef2ff;
+    margin: 0;
+    padding: 30px 15px;
+    color: #1e293b;
+}
+.container {
+    max-width: 550px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px #cbd5e1;
+}
+h1 {
+    text-align: center;
+    color: #4f46e5;
+}
+.subtitle {
+    text-align: center;
+    color: #64748b;
+}
+.input-area {
+    display: flex;
+    gap: 8px;
+    margin: 25px 0;
+}
+input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    background: #4f46e5;
+    color: white;
+}
+button:hover {
+    opacity: 0.85;
+}
+#habitList {
+    list-style: none;
+    padding: 0;
+}
+.habit {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px;
+    margin-bottom: 10px;
+    background: #f1f5f9;
+    border-radius: 8px;
+}
+.habit span {
+    flex: 1;
+    overflow-wrap: anywhere;
+}
+.completed span {
+    text-decoration: line-through;
+    color: #16a34a;
+}
+.habit input {
+    flex: none;
+    width: 18px;
+    height: 18px;
+}
+.delete {
+    background: #dc2626;
+}
+.progress {
+    height: 12px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+#bar {
+    height: 100%;
+    width: 0%;
+    background: #22c55e;
+    transition: width 0.3s;
+}
+#summary {
+    text-align: center;
+    margin: 15px 0;
+    font-weight: bold;
+}
+.empty {
+    text-align: center;
+    color: #94a3b8;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Habit Tracker</h1>
+    <p class="subtitle">Build good habits every day!</p>
+
+    <div class="input-area">
+        <input id="habitInput" placeholder="Enter a new habit">
+        <button onclick="addHabit()">Add</button>
+    </div>
+
+    <div id="summary">0 of 0 completed</div>
+    <div class="progress"><div id="bar"></div></div>
+    <ul id="habitList"></ul>
+</div>
+
+<script>
+let habits = JSON.parse(localStorage.getItem("habits") || "[]");
+
+function saveHabits() {
+    localStorage.setItem("habits", JSON.stringify(habits));
+}
+
+function addHabit() {
+    const input = document.getElementById("habitInput");
+    const name = input.value.trim();
+
+    if (!name) {
+        alert("Please enter a habit!");
+        return;
+    }
+
+    habits.push({
+        id: Date.now(),
+        name: name,
+        done: false
+    });
+
+    input.value = "";
+    saveHabits();
+    renderHabits();
+}
+
+function toggleHabit(id) {
+    habits = habits.map(h =>
+        h.id === id ? {...h, done: !h.done} : h
+    );
+    saveHabits();
+    renderHabits();
+}
+
+function deleteHabit(id) {
+    habits = habits.filter(h => h.id !== id);
+    saveHabits();
+    renderHabits();
+}
+
+function renderHabits() {
+    const list = document.getElementById("habitList");
+    list.innerHTML = "";
+
+    if (habits.length === 0) {
+        list.innerHTML = '<li class="empty">No habits yet. Add one above!</li>';
+    }
+
+    habits.forEach(habit => {
+        const item = document.createElement("li");
+        item.className = "habit" + (habit.done ? " completed" : "");
+
+        const check = document.createElement("input");
+        check.type = "checkbox";
+        check.checked = habit.done;
+        check.onchange = () => toggleHabit(habit.id);
+
+        const name = document.createElement("span");
+        name.textContent = habit.name;
+
+        const remove = document.createElement("button");
+        remove.textContent = "Delete";
+        remove.className = "delete";
+        remove.onclick = () => deleteHabit(habit.id);
+
+        item.append(check, name, remove);
+        list.appendChild(item);
+    });
+
+    const completed = habits.filter(h => h.done).length;
+    const total = habits.length;
+    const percent = total ? completed / total * 100 : 0;
+
+    document.getElementById("summary").textContent =
+        `${completed} of ${total} completed`;
+    document.getElementById("bar").style.width = percent + "%";
+}
+
+document.getElementById("habitInput").addEventListener("keydown", e => {
+    if (e.key === "Enter") addHabit();
+});
+
+renderHabits();
+</script>
+</body>
+</html>
