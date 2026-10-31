@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simple Quiz</title>
+<style>
+body {
+    font-family: Arial;
+    background: #e0f2fe;
+    text-align: center;
+    padding: 40px;
+}
+.box {
+    background: white;
+    padding: 25px;
+    max-width: 400px;
+    margin: auto;
+    border-radius: 12px;
+}
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    background: #0284c7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+#result {
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Simple Quiz</h2>
+<h3 id="question"></h3>
+<div id="options"></div>
+<p id="result"></p>
+<button onclick="nextQuestion()">Next</button>
+</div>
+
+<script>
+let questions = [
+{
+q: "Which language is used for web pages?",
+a: ["HTML", "Python", "C"],
+correct: "HTML"
+},
+{
+q: "Which company created JavaScript?",
+a: ["Google", "Netscape", "Microsoft"],
+correct: "Netscape"
+},
+{
+q: "What does CSS control?",
+a: ["Database", "Design", "Server"],
+correct: "Design"
+},
+{
+q: "Which symbol is used for comments in JavaScript?",
+a: ["//", "##", "<!--"],
+correct: "//"
+}
+];
+
+let index = 0;
+let score = 0;
+let answered = false;
+
+function showQuestion() {
+    answered = false;
+    let q = questions[index];
+    document.getElementById("question").innerText = q.q;
+    document.getElementById("result").innerText = "";
+
+    let html = "";
+    q.a.forEach(option => {
+        html += `<button onclick="checkAnswer('${option}')">${option}</button>`;
+    });
+
+    document.getElementById("options").innerHTML = html;
+}
+
+function checkAnswer(answer) {
+    if (answered) return;
+    answered = true;
+
+    if (answer === questions[index].correct) {
+        score++;
+        document.getElementById("result").innerText = "Correct Answer!";
+    } else {
+        document.getElementById("result").innerText = "Wrong Answer!";
+    }
+}
+
+function nextQuestion() {
+    if (!answered) {
+        document.getElementById("result").innerText = "Select an answer first!";
+        return;
+    }
+
+    index++;
+
+    if (index < questions.length) {
+        showQuestion();
+    } else {
+        document.querySelector(".box").innerHTML =
+        `<h2>Quiz Completed!</h2>
+        <h3>Your Score: ${score}/${questions.length}</h3>
+        <button onclick="location.reload()">Restart</button>`;
+    }
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
