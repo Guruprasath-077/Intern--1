@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Car Details Management</title>
+<style>
+body {
+    font-family: Arial;
+    background: #eef2f7;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 850px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+}
+h1 {
+    text-align: center;
+    color: #1d4ed8;
+}
+.form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+input, select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+button {
+    padding: 12px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+button:hover {
+    background: #1e40af;
+}
+.search {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 20px 0;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+th {
+    background: #2563eb;
+    color: white;
+}
+.delete {
+    background: #dc2626;
+}
+@media(max-width: 550px) {
+    .form { grid-template-columns: 1fr; }
+    .container { padding: 12px; overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>🚗 Car Details Management</h1>
+
+<h3>Add New Car</h3>
+
+<div class="form">
+<input id="name" placeholder="Car Name">
+<input id="model" placeholder="Car Model">
+<input id="price" type="number" placeholder="Price">
+<select id="fuel">
+<option value="">Select Fuel Type</option>
+<option>Petrol</option>
+<option>Diesel</option>
+<option>Electric</option>
+<option>Hybrid</option>
+</select>
+</div>
+
+<br>
+<button onclick="addCar()">Add Car</button>
+
+<input class="search" id="search"
+placeholder="Search car name..."
+oninput="showCars()">
+
+<h3>Car List</h3>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Model</th>
+<th>Price</th>
+<th>Fuel</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="carList"></tbody>
+</table>
+
+</div>
+
+<script>
+let cars = JSON.parse(localStorage.getItem("cars")) || [];
+
+function addCar() {
+    let name = document.getElementById("name").value.trim();
+    let model = document.getElementById("model").value.trim();
+    let price = document.getElementById("price").value;
+    let fuel = document.getElementById("fuel").value;
+
+    if (!name || !model || !price || Number(price) <= 0 || !fuel) {
+        alert("Please enter valid details!");
+        return;
+    }
+
+    let car = {
+        name: name,
+        model: model,
+        price: Number(price),
+        fuel: fuel
+    };
+
+    cars.push(car);
+    saveData();
+    showCars();
+
+    document.getElementById("name").value = "";
+    document.getElementById("model").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("fuel").value = "";
+}
+
+function saveData() {
+    localStorage.setItem("cars", JSON.stringify(cars));
+}
+
+function showCars() {
+    let list = document.getElementById("carList");
+    let search = document.getElementById("search").value.toLowerCase();
+
+    list.innerHTML = "";
+
+    let filtered = cars.filter(car =>
+        car.name.toLowerCase().includes(search)
+    );
+
+    filtered.forEach(car => {
+        let row = document.createElement("tr");
+
+        [car.name, car.model, "₹" + car.price, car.fuel]
+        .forEach(value => {
+            let cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+        });
+
+        let action = document.createElement("td");
+        let button = document.createElement("button");
+        button.textContent = "Delete";
+        button.className = "delete";
+
+        button.onclick = () => deleteCar(cars.indexOf(car));
+
+        action.appendChild(button);
+        row.appendChild(action);
+        list.appendChild(row);
+    });
+}
+
+function deleteCar(index) {
+    if (confirm("Delete this car?")) {
+        cars.splice(index, 1);
+        saveData();
+        showCars();
+    }
+}
+
+showCars();
+</script>
+
+</body>
+</html>
