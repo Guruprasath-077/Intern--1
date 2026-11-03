@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Speed Racing</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    background: #101820;
+    color: white;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 8%;
+    background: #080d12;
+}
+.logo {
+    color: #ff3838;
+    font-size: 25px;
+    font-weight: bold;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+.hero {
+    height: 85vh;
+    background: linear-gradient(90deg, #000b, #0005),
+    url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1400")
+    center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8%;
+}
+h1 {
+    font-size: 55px;
+    color: #ff3838;
+}
+.hero p {
+    font-size: 18px;
+    margin: 15px 0;
+}
+select {
+    width: 180px;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+button {
+    width: 180px;
+    padding: 14px;
+    background: #ff3838;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 17px;
+    cursor: pointer;
+}
+button:hover {
+    background: #c90000;
+}
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 35px 15px;
+    flex-wrap: wrap;
+}
+.feature {
+    background: #202b36;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    width: 220px;
+}
+.feature h3 {
+    color: #ff3838;
+    margin-bottom: 10px;
+}
+footer {
+    background: #080d12;
+    padding: 20px;
+    text-align: center;
+}
+@media(max-width: 600px) {
+    header { padding: 18px; }
+    nav a { margin-left: 8px; font-size: 13px; }
+    h1 { font-size: 38px; }
+    .hero { height: 75vh; }
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">🏎 SPEED RACING</div>
+<nav>
+<a href="#">Home</a>
+<a href="#features">Features</a>
+<a href="#about">About</a>
+</nav>
+</header>
+
+<section class="hero">
+<h1>RACE TO WIN</h1>
+<p>Experience speed, power and extreme racing action!</p>
+
+<label for="level">Select Difficulty</label>
+<select id="level">
+<option value="Easy">Easy</option>
+<option value="Medium">Medium</option>
+<option value="Hard">Hard</option>
+</select>
+
+<button onclick="startGame()">START GAME</button>
+</section>
+
+<section class="features" id="features">
+<div class="feature">
+<h3>🏁 Racing</h3>
+<p>Enjoy exciting racing challenges.</p>
+</div>
+<div class="feature">
+<h3>🚗 Super Cars</h3>
+<p>Experience powerful racing cars.</p>
+</div>
+<div class="feature">
+<h3>🏆 Challenges</h3>
+<p>Improve your racing skills.</p>
+</div>
+</section>
+
+<footer id="about">
+<p>Speed Racing | Created with HTML, CSS & JavaScript</p>
+</footer>
+
+<script>
+function startGame() {
+    let level = document.getElementById("level").value;
+
+    alert("Welcome to Speed Racing!\nDifficulty: " + level +
+          "\nYour race is ready to start!");
+}
+</script>
+
+</body>
+</html>
