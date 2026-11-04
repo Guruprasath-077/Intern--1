@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Movie Ticket Booking</title>
+<style>
+body {
+    font-family: Arial;
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 30px 10px;
+}
+.container {
+    max-width: 400px;
+    margin: auto;
+    background: #1f2937;
+    padding: 25px;
+    border-radius: 12px;
+}
+h1 { color: #facc15; }
+select, input {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+button {
+    width: 100%;
+    padding: 13px;
+    background: #e11d48;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+button:hover { background: #be123c; }
+#total {
+    color: #4ade80;
+    font-size: 22px;
+}
+#message { margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>🎬 Movie Tickets</h1>
+<p>Book your favourite movie!</p>
+
+<label>Select Movie</label>
+<select id="movie" onchange="calculate()">
+<option value="150">Leo - ₹150</option>
+<option value="180">Vikram - ₹180</option>
+<option value="200">Jailer - ₹200</option>
+<option value="250">Avatar - ₹250</option>
+</select>
+
+<label>Show Time</label>
+<select id="time">
+<option>10:00 AM</option>
+<option>1:00 PM</option>
+<option>4:00 PM</option>
+<option>7:00 PM</option>
+</select>
+
+<label>Number of Tickets</label>
+<input type="number" id="tickets"
+value="1" min="1" max="10" oninput="calculate()">
+
+<h3 id="total">Total: ₹150</h3>
+
+<button onclick="bookTicket()">Book Now</button>
+
+<div id="message"></div>
+</div>
+
+<script>
+function calculate() {
+    let price = Number(document.getElementById("movie").value);
+    let count = Number(document.getElementById("tickets").value);
+
+    if (!Number.isInteger(count) || count < 1 || count > 10) {
+        document.getElementById("total").innerText =
+            "Enter 1 to 10 tickets";
+        return;
+    }
+
+    document.getElementById("total").innerText =
+        "Total: ₹" + (price * count);
+}
+
+function bookTicket() {
+    let movie = document.getElementById("movie");
+    let time = document.getElementById("time").value;
+    let count = Number(document.getElementById("tickets").value);
+    let price = Number(movie.value);
+
+    if (!Number.isInteger(count) || count < 1 || count > 10) {
+        alert("Please select 1 to 10 tickets.");
+        return;
+    }
+
+    let total = price * count;
+
+    document.getElementById("message").innerHTML =
+        "<h3>Booking Successful! 🎉</h3>" +
+        "<p>Movie: " + movie.options[movie.selectedIndex].text + "</p>" +
+        "<p>Show: " + time + "</p>" +
+        "<p>Tickets: " + count + "</p>" +
+        "<p>Total Amount: ₹" + total + "</p>";
+}
+
+calculate();
+</script>
+
+</body>
+</html>
