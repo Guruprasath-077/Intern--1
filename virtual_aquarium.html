@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Virtual Aquarium</title>
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    background: #e0f2fe;
+    padding: 20px;
+}
+h1 { color: #0369a1; }
+.aquarium {
+    height: 350px;
+    max-width: 650px;
+    margin: 20px auto;
+    background: linear-gradient(#38bdf8, #075985);
+    border: 10px solid #92400e;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+}
+.fish {
+    position: absolute;
+    font-size: 35px;
+    animation: swim 5s linear infinite alternate;
+}
+@keyframes swim {
+    from { transform: translateX(0); }
+    to { transform: translateX(450px) scaleX(-1); }
+}
+button, select {
+    padding: 12px;
+    margin: 6px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+}
+button {
+    background: #0284c7;
+    color: white;
+}
+button:hover { background: #0369a1; }
+#count { font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>🐠 Virtual Aquarium</h1>
+<p>Take care of your little underwater world!</p>
+
+<div class="aquarium" id="tank">
+    <div style="position:absolute;bottom:5px;font-size:35px">
+        🌿 🪸 🌿 🪨 🌿
+    </div>
+</div>
+
+<p id="count">Fish Count: 0</p>
+
+<select id="fishType">
+    <option value="🐠">Clown Fish</option>
+    <option value="🐟">Blue Fish</option>
+    <option value="🐡">Puffer Fish</option>
+    <option value="🦈">Shark</option>
+</select>
+
+<button onclick="addFish()">Add Fish</button>
+<button onclick="feedFish()">Feed Fish 🍤</button>
+<button onclick="changeWater()">Change Water</button>
+
+<p id="message">Welcome to your aquarium!</p>
+
+<script>
+let fishCount = 0;
+let waterColors = [
+    "linear-gradient(#38bdf8, #075985)",
+    "linear-gradient(#34d399, #047857)",
+    "linear-gradient(#818cf8, #312e81)"
+];
+let colorIndex = 0;
+
+function addFish() {
+    let type = document.getElementById("fishType").value;
+    let fish = document.createElement("div");
+
+    fish.className = "fish";
+    fish.innerText = type;
+
+    fish.style.top = Math.random() * 220 + "px";
+    fish.style.left = "0px";
+    fish.style.animationDuration = (3 + Math.random() * 4) + "s";
+
+    document.getElementById("tank").appendChild(fish);
+
+    fishCount++;
+    updateCount();
+    document.getElementById("message").innerText =
+        "A new fish joined your aquarium!";
+}
+
+function feedFish() {
+    if (fishCount === 0) {
+        document.getElementById("message").innerText =
+            "Add some fish first!";
+        return;
+    }
+
+    let food = document.createElement("div");
+    food.innerText = "🍤";
+    food.style.position = "absolute";
+    food.style.top = "10px";
+    food.style.left = Math.random() * 80 + 10 + "%";
+
+    document.getElementById("tank").appendChild(food);
+
+    setTimeout(() => food.remove(), 2000);
+
+    document.getElementById("message").innerText =
+        "Yummy! Your fish are eating!";
+}
+
+function changeWater() {
+    colorIndex = (colorIndex + 1) % waterColors.length;
+    document.getElementById("tank").style.background =
+        waterColors[colorIndex];
+
+    document.getElementById("message").innerText =
+        "Aquarium water color changed!";
+}
+
+function updateCount() {
+    document.getElementById("count").innerText =
+        "Fish Count: " + fishCount;
+}
+</script>
+
+</body>
+</html>
