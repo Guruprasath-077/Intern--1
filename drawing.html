@@ -1,0 +1,129 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mini Drawing Pad</title>
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    background: #e0e7ff;
+}
+h1 { color: #312e81; }
+.container {
+    background: white;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 650px;
+    border-radius: 15px;
+}
+canvas {
+    background: white;
+    border: 2px solid #333;
+    width: 100%;
+    height: 350px;
+    touch-action: none;
+    cursor: crosshair;
+}
+button, input {
+    margin: 6px;
+    padding: 9px;
+    cursor: pointer;
+}
+button {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+}
+</style>
+</head>
+<body>
+
+<h1>🎨 Mini Drawing Pad</h1>
+
+<div class="container">
+    <p>Choose your color and start drawing!</p>
+
+    <input type="color" id="color" value="#000000">
+
+    <label>Brush Size:</label>
+    <input type="range" id="size" min="1" max="30" value="5">
+
+    <button onclick="erase()">Eraser</button>
+    <button onclick="clearPad()">Clear</button>
+    <button onclick="download()">Download</button>
+
+    <canvas id="board"></canvas>
+</div>
+
+<script>
+const canvas = document.getElementById("board");
+const ctx = canvas.getContext("2d");
+
+canvas.width = 600;
+canvas.height = 350;
+
+let drawing = false;
+let color = "#000000";
+let size = 5;
+
+document.getElementById("color").oninput = e => {
+    color = e.target.value;
+};
+
+document.getElementById("size").oninput = e => {
+    size = e.target.value;
+};
+
+function getPosition(e) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: (e.clientX - rect.left) * canvas.width / rect.width,
+        y: (e.clientY - rect.top) * canvas.height / rect.height
+    };
+}
+
+canvas.onpointerdown = e => {
+    drawing = true;
+    canvas.setPointerCapture(e.pointerId);
+    const p = getPosition(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+};
+
+canvas.onpointermove = e => {
+    if (!drawing) return;
+
+    const p = getPosition(e);
+    ctx.lineWidth = size;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = color;
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+};
+
+canvas.onpointerup = () => drawing = false;
+canvas.onpointercancel = () => drawing = false;
+
+function erase() {
+    color = "white";
+    size = 20;
+    document.getElementById("size").value = 20;
+}
+
+function clearPad() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function download() {
+    const link = document.createElement("a");
+    link.download = "my-drawing.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+}
+</script>
+
+</body>
+</html>
+```
